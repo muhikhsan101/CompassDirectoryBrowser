@@ -93,7 +93,6 @@
 
             foreach ($output as $value) {
                 if (!empty($value)){
-                    $path = $this->__getFilePaths().$value;
                     $relativePath = $this->__getRelativeFilePath().$value;
 
                     //get size of file and datetime of last modified
@@ -106,7 +105,7 @@
                     $size = $fileSize===0 ? "0B" : $this->unitsConversion($fileSize);
                     $lastModified = date("F d Y H:i:s", filemtime($relativePath));
 
-                    $this->files[$value] = [$path,$size,$perms,$lastModified];
+                    $this->files[$value] = [$relativePath,$size,$perms,$lastModified];
                 }
             }
         }
@@ -153,13 +152,6 @@
         * GETTERS of paths of files and directories, relative paths from PHP running script
         * @access public
         */
-        public function __getFilePaths(){
-            //Set server REQUEST_URI without compass.php.*
-            $replacePath = !empty($_GET['dir']) ? $_GET['dir'].DIRECTORY_SEPARATOR : DIRECTORY_SEPARATOR;
-            return preg_replace("/\/compass\.php.*/",
-                                 $replacePath,
-                                 $_SERVER['REQUEST_URI']);
-        }
         public function __getDirPaths(){
             //If isset $_GET, return path of directory
             return $dirPath = !empty($_GET['dir']) ? $_GET['dir'] : null;
@@ -416,7 +408,7 @@
                     <?php if ($name === null): ?>
                         <?php continue ?>
                     <?php endif; ?>
-                    <tr class="dir" data-href="compass.php<?= $path ?>" onclick="search(this); return false;">
+                    <tr class="dir" data-href="<?= basename(__FILE__) . $path ?>" onclick="search(this); return false;">
                         <td>
                             <?php if ($name === ".."): ?>
                                 <?= "&#8624;.." ?>
