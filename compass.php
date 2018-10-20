@@ -432,9 +432,6 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <footer>
-            <small>Made with <span>&hearts;</span> by <a href="//jkmas.cz">JkmAS</a></small>
-        </footer>
 	<script>
             <!--
             function search(element) {
